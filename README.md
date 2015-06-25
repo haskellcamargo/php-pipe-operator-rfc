@@ -11,7 +11,8 @@ This document aims to propose the implementation of the pipeline operator (`|>`)
 The pipeline operator applies the function on its right side to the value on the left side.
 This makes easy to write complex expressions that are evaluated from left-to-right/top-to-bottom.
 Many people find the left-to-right order more readable, especially in cases like this where the
-filters are higher-order functions that take parameters.
+filters are higher-order functions that take parameters. When called with functions that receive
+more than 2 parameters, the left operand is applied as the **last** argument.
 
 #### Example
 
@@ -53,4 +54,56 @@ range(1, 10) |> Seq::filter ("even")
 
 ### Problems
 
-- Parameterization of built-in functions that differ, such as `array_map` and `array_filter`.
+- 1) Parameterization of built-in functions that differ, such as `array_map` and `array_filter`.
+
+### Solutions
+
+- 1) Use a wildcard `$_` for parameter allocation:
+
+```php
+range(1, 10) |> array_filter($_, "even")
+             |> array_map("sqrt", $_)
+             |> array_walk($_, "println");
+```
+
+### Equivalence
+
+This feature can actually be emulated by using objects and self-return, with fluent-interfaces:
+
+#### Implementation
+```php
+class Seq
+{
+  private $value;
+  
+  function __construct(array $xs)
+  {
+    $this->value = $xs;
+  }
+  
+  function map(callable $fn)
+  {
+    $this->value = array_map($fn, $this->value);
+    return $this;
+  }
+  
+  function filter(callable $fn)
+  {
+    $this->value = array_filter($this->value, $fn);
+    return $this;
+  }
+  
+  function each($fn)
+  {
+    array_walk($this->value, $fn);
+    return $this;
+  }
+}
+```
+
+#### Usage
+```php
+(new Seq(range(1, 10)) -> filter("even")
+                       -> map("sqrt")
+                       -> each("println");
+```
