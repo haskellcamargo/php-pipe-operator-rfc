@@ -46,6 +46,7 @@ range(1, 10) |> Seq::filter ("even")
 - LiveScript
 - F#
 - Shellscript
+- Elixir
 
 ### Benefits
 
