@@ -93,7 +93,7 @@ class Seq
     return $this;
   }
   
-  function each($fn)
+  function each(callable $fn)
   {
     array_walk($this->value, $fn);
     return $this;
