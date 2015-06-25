@@ -104,6 +104,6 @@ class Seq
 #### Usage
 ```php
 (new Seq(range(1, 10))) -> filter("even")
-                       -> map("sqrt")
-                       -> each("println");
+                        -> map("sqrt")
+                        -> each("println");
 ```
