@@ -58,12 +58,12 @@ range(1, 10) |> Seq::filter ("even")
 
 ### Solutions
 
-- 1) Use a wildcard `$_` for parameter allocation:
+- 1) Use a wildcard `$` for parameter allocation:
 
 ```php
-range(1, 10) |> array_filter($_, "even")
-             |> array_map("sqrt", $_)
-             |> array_walk($_, "println");
+range(1, 10) |> array_filter($, "even")
+             |> array_map("sqrt", $)
+             |> array_walk($, "println");
 ```
 
 ### Equivalence
