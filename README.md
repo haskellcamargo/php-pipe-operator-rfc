@@ -47,6 +47,7 @@ range(1, 10) |> Seq::filter ("even")
 - F#
 - Shellscript
 - Elixir
+- OCaml
 
 ### Benefits
 
