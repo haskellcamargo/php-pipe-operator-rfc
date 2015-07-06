@@ -109,3 +109,5 @@ class Seq
                         -> map("sqrt")
                         -> each("println");
 ```
+
+#### Practical example
